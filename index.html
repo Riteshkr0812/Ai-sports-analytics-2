@@ -11,30 +11,68 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    :root {
+      --bg-overlay: rgba(0,0,0,0.7);
+      --card-bg: rgba(0,0,0,0.65);
+      --section-bg: rgba(255,255,255,0.12);
+      --text: #ffffff;
+      --panel: #ffffff;
+    }
+    body.light {
+      --bg-overlay: rgba(255,255,255,0.75);
+      --card-bg: rgba(255,255,255,0.85);
+      --section-bg: rgba(0,0,0,0.06);
+      --text: #111111;
+      --panel: #ffffff;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: url('https://images.unsplash.com/photo-1501706362039-c6e08f1b7f4d') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
+      color: var(--text);
     }
 
     .overlay {
-      background: rgba(0,0,0,0.7);
+      background: var(--bg-overlay);
       min-height: 100vh;
       padding: 20px;
     }
 
-    h1, h2, h3 {
-      text-align: center;
+    header {
+      max-width: 1100px;
+      margin: 0 auto 10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
     }
 
+    .college {
+      text-align: left;
+    }
+
+    .college h1 { margin: 0; }
+    .college p { margin: 4px 0 0; opacity: .9; }
+
+    .actions {
+      display: flex; gap: 8px;
+    }
+
+    .btn {
+      border: 0; border-radius: 10px; padding: 8px 12px; cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,.35);
+    }
+
+    h2, h3 { text-align: center; }
+
     .section {
-      background: rgba(255,255,255,0.12);
+      background: var(--section-bg);
       border-radius: 12px;
       padding: 20px;
       margin: 25px auto;
-      max-width: 1000px;
+      max-width: 1100px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
@@ -42,7 +80,7 @@
       position: relative;
       width: 100%;
       height: 350px;
-      background: #ffffff;
+      background: var(--panel);
       border-radius: 10px;
       padding: 10px;
     }
@@ -54,7 +92,7 @@
     }
 
     .card {
-      background: rgba(0,0,0,0.65);
+      background: var(--card-bg);
       border-radius: 12px;
       padding: 15px;
       text-align: center;
@@ -73,22 +111,20 @@
       border-radius: 8px;
     }
 
-    ul {
-      line-height: 1.8;
-      font-size: 16px;
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
     }
+
+    ul { line-height: 1.8; font-size: 16px; }
 
     footer {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 14px;
-      opacity: 0.9;
+      text-align: center; margin-top: 30px; font-size: 14px; opacity: 0.9;
     }
 
-    @media (max-width: 600px) {
-      .chart-container {
-        height: 280px;
-      }
+    @media (max-width: 700px) {
+      header { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .chart-container { height: 280px; }
     }
   </style>
 
@@ -98,13 +134,45 @@
   <div class="overlay">
 
 ```
-<h1>AI-Powered Sports Analytics Tool</h1>
+<header>
+  <div class="college">
+    <h1>AI-Powered Sports Analytics Tool</h1>
+    <p><strong>College:</strong> TIT&S | <strong>Branch:</strong> CSE | <strong>Student:</strong> Ritesh Kumar Yadav</p>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="toggleTheme()">🌗 Toggle Theme</button>
+    <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
+  </div>
+</header>
+
 <h3>Analyze sports data and improve team performance</h3>
 
 <div class="section">
   <h2>📊 Team Performance Analytics</h2>
   <div class="chart-container">
     <canvas id="teamChart"></canvas>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🤖 Match Outcome Prediction (Demo AI)</h2>
+  <div class="grid-2">
+    <div>
+      <p><strong>Inputs:</strong></p>
+      <ul>
+        <li>Recent form (Wins %)</li>
+        <li>Home advantage</li>
+        <li>Player fitness index</li>
+      </ul>
+    </div>
+    <div>
+      <p><strong>Prediction:</strong></p>
+      <ul>
+        <li>Win Probability: <strong id="winProb">—</strong></li>
+        <li>Confidence Level: <strong id="conf">—</strong></li>
+      </ul>
+      <button class="btn" onclick="predict()">Run Prediction</button>
+    </div>
   </div>
 </div>
 
@@ -145,42 +213,35 @@
 
 <div class="section">
   <h2>❤️ DRP Lovers</h2>
-  <p style="text-align:center;">
-    Ritesh Kumar Yadav | Rohit Gour | Ravindra Raghuwanshi
-  </p>
+  <p style="text-align:center;">Ritesh Kumar Yadav | Rohit Gour | Ravindra Raghuwanshi</p>
 </div>
 
-<footer>
-  © 2025 AI Sports Analytics Project | CSE Student Project
-</footer>
+<footer>© 2025 AI Sports Analytics Project | CSE Student Project</footer>
 ```
 
   </div>
 
   <script>
+    function toggleTheme(){ document.body.classList.toggle('light'); }
+
+    function predict(){
+      const prob = Math.floor(55 + Math.random()*35);
+      document.getElementById('winProb').textContent = prob + '%';
+      document.getElementById('conf').textContent = prob > 75 ? 'High' : (prob > 65 ? 'Medium' : 'Low');
+    }
+
     window.addEventListener('load', () => {
       const ctx = document.getElementById('teamChart').getContext('2d');
       new Chart(ctx, {
         type: 'bar',
         data: {
           labels: ['Matches', 'Wins', 'Losses', 'Draws'],
-          datasets: [{
-            label: 'Team Performance',
-            data: [50, 32, 15, 3]
-          }]
+          datasets: [{ label: 'Team Performance', data: [50, 32, 15, 3] }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: { color: '#000' }
-            }
-          },
-          scales: {
-            x: { ticks: { color: '#000' } },
-            y: { ticks: { color: '#000' } }
-          }
+          scales: { x: { ticks: { color: '#000' } }, y: { ticks: { color: '#000' } } }
         }
       });
     });
