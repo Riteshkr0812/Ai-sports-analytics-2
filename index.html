@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI-Powered Sports Analytics Tool</title>
+
+  <!-- Chart.js -->
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -15,120 +18,173 @@
       background-size: cover;
       color: #fff;
     }
+
     .overlay {
-      background: rgba(0,0,0,0.65);
+      background: rgba(0,0,0,0.7);
       min-height: 100vh;
       padding: 20px;
     }
-    h1, h2, h3 { text-align: center; }
-    .section {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 1000px;
-    }
-    .players {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-    }
-    .card {
-      background: rgba(0,0,0,0.6);
-      border-radius: 10px;
-      padding: 15px;
+
+    h1, h2, h3 {
       text-align: center;
     }
+
+    .section {
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 25px auto;
+      max-width: 1000px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 350px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .players {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.65);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    }
+
     .card img {
       width: 100%;
       height: 180px;
       object-fit: cover;
       border-radius: 8px;
     }
-    canvas {
-      background: #fff;
-      border-radius: 10px;
-      padding: 10px;
+
+    ul {
+      line-height: 1.8;
+      font-size: 16px;
     }
+
     footer {
       text-align: center;
       margin-top: 30px;
       font-size: 14px;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 600px) {
+      .chart-container {
+        height: 280px;
+      }
     }
   </style>
+
 </head>
 
 <body>
   <div class="overlay">
 
-    <h1>AI-Powered Sports Analytics Tool</h1>
-    <h3>Analyze sports data and improve team performance</h3>
+```
+<h1>AI-Powered Sports Analytics Tool</h1>
+<h3>Analyze sports data and improve team performance</h3>
 
-    <div class="section">
-      <h2>📊 Team Performance Analytics</h2>
-      <canvas id="teamChart"></canvas>
+<div class="section">
+  <h2>📊 Team Performance Analytics</h2>
+  <div class="chart-container">
+    <canvas id="teamChart"></canvas>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🌟 Famous Players (Public Data)</h2>
+  <div class="players">
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Virat_Kohli.jpg">
+      <h4>Virat Kohli</h4>
+      <p>Runs: 12,000+<br>Role: Batsman</p>
     </div>
-
-    <div class="section">
-      <h2>🌟 Famous Players (Public Data)</h2>
-      <div class="players">
-        <div class="card">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Virat_Kohli.jpg">
-          <h4>Virat Kohli</h4>
-          <p>Runs: 12,000+ | Batsman</p>
-        </div>
-        <div class="card">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Rohit_Sharma.jpg">
-          <h4>Rohit Sharma</h4>
-          <p>Runs: 10,000+ | Opener</p>
-        </div>
-        <div class="card">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Lionel_Messi_20180626.jpg">
-          <h4>Lionel Messi</h4>
-          <p>Goals: 800+ | Forward</p>
-        </div>
-        <div class="card">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg">
-          <h4>Cristiano Ronaldo</h4>
-          <p>Goals: 850+ | Forward</p>
-        </div>
-      </div>
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Rohit_Sharma.jpg">
+      <h4>Rohit Sharma</h4>
+      <p>Runs: 10,000+<br>Role: Opener</p>
     </div>
-
-    <div class="section">
-      <h2>🧠 AI Insights</h2>
-      <ul>
-        <li>Team consistency improves win probability by 23%</li>
-        <li>Balanced squads outperform star-centric teams</li>
-        <li>Fitness impacts late-game performance</li>
-      </ul>
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Lionel_Messi_20180626.jpg">
+      <h4>Lionel Messi</h4>
+      <p>Goals: 800+<br>Role: Forward</p>
     </div>
-
-    <div class="section">
-      <h2>❤️ DRP Lovers</h2>
-      <p style="text-align:center;">
-        Ritesh Kumar Yadav | Rohit Gour | Ravindra Raghuwanshi
-      </p>
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg">
+      <h4>Cristiano Ronaldo</h4>
+      <p>Goals: 850+<br>Role: Forward</p>
     </div>
+  </div>
+</div>
 
-    <footer>
-      © 2025 AI Sports Analytics Project | CSE Student Project
-    </footer>
+<div class="section">
+  <h2>🧠 AI Insights</h2>
+  <ul>
+    <li>Team consistency improves win probability by 23%</li>
+    <li>Balanced squads outperform star-centric teams</li>
+    <li>Fitness directly impacts late-game performance</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>❤️ DRP Lovers</h2>
+  <p style="text-align:center;">
+    Ritesh Kumar Yadav | Rohit Gour | Ravindra Raghuwanshi
+  </p>
+</div>
+
+<footer>
+  © 2025 AI Sports Analytics Project | CSE Student Project
+</footer>
+```
 
   </div>
 
   <script>
-    new Chart(document.getElementById('teamChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Matches', 'Wins', 'Losses', 'Draws'],
-        datasets: [{
-          label: 'Team Stats',
-          data: [50, 32, 15, 3]
-        }]
-      },
-      options: { responsive: true }
+    window.addEventListener('load', () => {
+      const ctx = document.getElementById('teamChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Matches', 'Wins', 'Losses', 'Draws'],
+          datasets: [{
+            label: 'Team Performance',
+            data: [50, 32, 15, 3]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#000' }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#000' } },
+            y: { ticks: { color: '#000' } }
+          }
+        }
+      });
     });
   </script>
+
 </body>
 </html>
