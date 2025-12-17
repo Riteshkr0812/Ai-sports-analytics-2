@@ -8,43 +8,126 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 :root{
   --bg-overlay: rgba(0,0,0,0.7);
-  --card-bg: rgba(0,0,0,0.65);
+  --card-bg: rgba(0,0,0,0.55);
   --section-bg: rgba(255,255,255,0.12);
   --text:#fff;
   --panel:#fff;
 }
-body.light{
-  --bg-overlay: rgba(255,255,255,0.75);
-  --card-bg: rgba(255,255,255,0.85);
-  --section-bg: rgba(0,0,0,0.06);
-  --text:#111;
-}
+
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:'Poppins', Arial, sans-serif;
   background:url('https://images.unsplash.com/photo-1501706362039-c6e08f1b7f4d') center/cover fixed;
   color:var(--text);
 }
-.overlay{background:var(--bg-overlay);min-height:100vh;padding:20px;}
-header{max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr auto;gap:10px;}
-.section{background:var(--section-bg);padding:20px;border-radius:12px;max-width:1100px;margin:25px auto;}
-.chart-container{height:320px;background:var(--panel);border-radius:10px;padding:10px;}
-.btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;margin:4px;}
-.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
-.card{background:var(--card-bg);padding:15px;border-radius:12px;text-align:center;}
+
+.overlay{
+  background:var(--bg-overlay);
+  min-height:100vh;
+  padding:20px;
+}
+
+header{
+  max-width:1100px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:center;
+}
+
+.section{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  padding:24px;
+  border-radius:16px;
+  max-width:1100px;
+  margin:30px auto;
+  box-shadow:0 8px 30px rgba(0,0,0,0.35);
+  transition:transform .3s;
+}
+.section:hover{transform:translateY(-4px);}
+
+h2,h3{text-align:center}
+
+.chart-container{
+  height:320px;
+  background:#fff;
+  border-radius:12px;
+  padding:10px;
+}
+
+.btn{
+  padding:10px 18px;
+  border-radius:30px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:#fff;
+  box-shadow:0 6px 18px rgba(0,114,255,.5);
+  transition:.3s;
+}
+.btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 10px 25px rgba(0,114,255,.8);
+}
+
+.players{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+
+.card{
+  background:var(--card-bg);
+  padding:16px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+  transition:.3s;
+}
+.card:hover{
+  transform:translateY(-8px) scale(1.03);
+}
 .card img{
   width:100%;
   height:180px;
   object-fit:cover;
-  border-radius:8px;
+  border-radius:10px;
   background:#fff;
 }
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.input{width:100%;padding:8px;border-radius:6px;border:none;margin-top:4px;}
-footer{text-align:center;margin-top:30px;font-size:14px;}
-@media(max-width:700px){.grid-2{grid-template-columns:1fr;}}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.input{
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:none;
+  margin-top:6px;
+  outline:none;
+  font-size:15px;
+}
+
+footer{
+  text-align:center;
+  margin-top:30px;
+  font-size:14px;
+  opacity:.9;
+}
+
+@media(max-width:700px){
+  .grid-2{grid-template-columns:1fr;}
+}
 </style>
 </head>
 
@@ -56,75 +139,72 @@ footer{text-align:center;margin-top:30px;font-size:14px;}
     <h1>AI-Powered Sports Analytics Tool</h1>
     <p><b>College:</b> TIT&S | <b>Branch:</b> CSE</p>
   </div>
-  <div>
-    <button class="btn" onclick="toggleTheme()">🌗 Theme</button>
-    <button class="btn" onclick="window.print()">🖨️ PDF</button>
-  </div>
+  <button class="btn" onclick="window.print()">🖨️ Export PDF</button>
 </header>
 
-<h3 style="text-align:center;">Analyze sports data and improve team performance</h3>
+<h3>Analyze sports data and improve team performance</h3>
 
 <!-- Trend Chart -->
 <div class="section">
-<h2>📈 Performance Trend (Last 10 Matches)</h2>
+<h2>📈 Performance Trend</h2>
 <div class="chart-container"><canvas id="trendChart"></canvas></div>
 </div>
 
 <!-- Manual Entry -->
 <div class="section">
-<h2>✍️ Manual Data Entry for Analysis</h2>
+<h2>✍️ Manual Match Analysis</h2>
 <div class="grid-2">
 <div>
 Matches <input id="mMatches" type="number" class="input">
 Wins <input id="mWins" type="number" class="input">
 Losses <input id="mLosses" type="number" class="input">
-Draws <input id="mDraws" type="number" class="input"><br>
+Draws <input id="mDraws" type="number" class="input"><br><br>
 <button class="btn" onclick="analyzeManual()">Analyze</button>
-<button class="btn" onclick="clearSaved()">🗑️ Clear</button>
 </div>
 <div>
 <h3>📊 Result</h3>
-<p>Total Matches: <b id="rMatches">—</b></p>
+<p>Matches: <b id="rMatches">—</b></p>
 <p>Win %: <b id="rWin">—</b></p>
-<p>Team Rating: <b id="rRating">—</b></p>
+<p>Rating: <b id="rRating">—</b></p>
+<button class="btn" onclick="downloadCSV()">📥 Download CSV</button>
 </div>
 </div>
 </div>
 
-<!-- Player Analysis -->
+<!-- AI Match Prediction -->
 <div class="section">
-<h2>📊 Famous Player Analysis</h2>
+<h2>🤖 AI Match Prediction</h2>
+Team Form (%) <input type="range" id="form" min="0" max="100" value="60" class="input">
+Fitness (%) <input type="range" id="fitness" min="0" max="100" value="70" class="input">
+Home Advantage (%) <input type="range" id="home" min="0" max="100" value="50" class="input">
+<br><br>
+<button class="btn" onclick="predictMatch()">Predict</button>
+<p>Win Probability: <b id="aiWin">—</b></p>
+<p>Confidence: <b id="aiConf">—</b></p>
+</div>
+
+<!-- Players -->
+<div class="section">
+<h2>🌟 Famous Player Analysis</h2>
 <div class="players">
-
-<div class="card">
-<img src="images/virat.jpg" alt="Virat Kohli">
-<h3>Virat Kohli</h3>
-<p>Cricket | Batsman</p>
-<p><b>AI:</b> Consistent chase expert</p>
+<div class="card"><img src="images/virat.jpg"><h3>Virat Kohli</h3><p>Consistent Chaser</p></div>
+<div class="card"><img src="images/rohit.jpg"><h3>Rohit Sharma</h3><p>Powerplay Specialist</p></div>
+<div class="card"><img src="images/messi.jpg"><h3>Lionel Messi</h3><p>Elite Playmaker</p></div>
+<div class="card"><img src="images/ronaldo.jpg"><h3>Cristiano Ronaldo</h3><p>Physical Dominance</p></div>
+</div>
 </div>
 
-<div class="card">
-<img src="images/rohit.jpg" alt="Rohit Sharma">
-<h3>Rohit Sharma</h3>
-<p>Cricket | Opener</p>
-<p><b>AI:</b> Powerplay dominance</p>
+<!-- Radar -->
+<div class="section">
+<h2>📊 Player Performance Radar</h2>
+<div class="chart-container"><canvas id="radarChart"></canvas></div>
 </div>
 
-<div class="card">
-<img src="images/messi.jpg" alt="Lionel Messi">
-<h3>Lionel Messi</h3>
-<p>Football | Forward</p>
-<p><b>AI:</b> Elite playmaker</p>
-</div>
-
-<div class="card">
-<img src="images/ronaldo.jpg" alt="Cristiano Ronaldo">
-<h3>Cristiano Ronaldo</h3>
-<p>Football | Forward</p>
-<p><b>AI:</b> Physical dominance</p>
-</div>
-
-</div>
+<!-- AI Insights -->
+<div class="section">
+<h2>🧠 AI Insights</h2>
+<button class="btn" onclick="generateInsights()">Generate Insights</button>
+<ul id="insights"></ul>
 </div>
 
 <!-- Developers -->
@@ -137,45 +217,46 @@ Draws <input id="mDraws" type="number" class="input"><br>
 </div>
 
 <script>
-function toggleTheme(){document.body.classList.toggle('light');}
-
 function analyzeManual(){
-  const m = Number(mMatches.value);
-  const w = Number(mWins.value);
-  const l = Number(mLosses.value);
-  const d = Number(mDraws.value);
-  if(m<=0){alert("Matches must be > 0");return;}
-  const wp = ((w/m)*100).toFixed(2);
-  rMatches.innerText = m;
-  rWin.innerText = wp + "%";
-  rRating.innerText = wp>70?"Excellent":wp>55?"Good":"Average";
-  localStorage.setItem("manualData", JSON.stringify({m,w,l,d}));
+  const m=+mMatches.value,w=+mWins.value,l=+mLosses.value,d=+mDraws.value;
+  if(m<=0)return alert("Invalid matches");
+  const wp=((w/m)*100).toFixed(2);
+  rMatches.innerText=m;
+  rWin.innerText=wp+"%";
+  rRating.innerText=wp>70?"Excellent":wp>55?"Good":"Average";
 }
 
-function clearSaved(){
-  localStorage.clear();
-  location.reload();
+function predictMatch(){
+  const score=(form.value*0.4+fitness.value*0.4+home.value*0.2).toFixed(1);
+  aiWin.innerText=score+"%";
+  aiConf.innerText=score>70?"High":score>55?"Medium":"Low";
 }
 
-window.addEventListener("load",()=>{
-  const data = localStorage.getItem("manualData");
-  if(data){
-    const d = JSON.parse(data);
-    mMatches.value=d.m; mWins.value=d.w;
-    mLosses.value=d.l; mDraws.value=d.d;
-  }
+function generateInsights(){
+  insights.innerHTML="";
+  ["Strong recent momentum","Fitness impacts outcome","Home advantage matters","Balanced teams win more"]
+  .forEach(t=>{const li=document.createElement("li");li.innerText=t;insights.appendChild(li);});
+}
+
+function downloadCSV(){
+  const csv=`Metric,Value\nMatches,${rMatches.innerText}\nWin%,${rWin.innerText}\nRating,${rRating.innerText}`;
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="analytics_report.csv";a.click();
+}
+
+new Chart(trendChart,{
+  type:'line',
+  data:{labels:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10'],
+  datasets:[{label:'Performance Index',data:[62,65,63,68,70,72,71,74,76,78]}]}
 });
 
-new Chart(document.getElementById('trendChart'),{
-  type:'line',
-  data:{
-    labels:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10'],
-    datasets:[{label:'Performance Index',data:[62,65,63,68,70,72,71,74,76,78]}]
-  },
-  options:{responsive:true}
+new Chart(radarChart,{
+  type:'radar',
+  data:{labels:['Performance','Fitness','Consistency','Pressure'],
+  datasets:[{label:'Virat Kohli',data:[92,88,90,85],fill:true}]}
 });
 </script>
 
 </body>
 </html>
-
