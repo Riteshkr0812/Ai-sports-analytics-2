@@ -23,19 +23,22 @@ body.light{
 }
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:url('https://images.unsplash.com/photo-1501706362039-c6e08f1b7f4d') center/cover fixed;
   color:var(--text);
 }
 .overlay{background:var(--bg-overlay);min-height:100vh;padding:20px;}
 header{max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr auto;gap:10px;}
-.btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;}
 .section{background:var(--section-bg);padding:20px;border-radius:12px;max-width:1100px;margin:25px auto;}
-.chart-container{height:350px;background:var(--panel);border-radius:10px;padding:10px;}
+.chart-container{height:320px;background:var(--panel);border-radius:10px;padding:10px;}
+.btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;}
 .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
 .card{background:var(--card-bg);padding:15px;border-radius:12px;text-align:center;}
 .card img{width:100%;height:180px;object-fit:cover;border-radius:8px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.input{width:100%;padding:8px;border-radius:6px;border:none;margin-top:4px;}
 footer{text-align:center;margin-top:30px;font-size:14px;}
+@media(max-width:700px){.grid-2{grid-template-columns:1fr;}}
 </style>
 </head>
 
@@ -55,11 +58,13 @@ footer{text-align:center;margin-top:30px;font-size:14px;}
 
 <h3 style="text-align:center;">Analyze sports data and improve team performance</h3>
 
+<!-- Trend Chart -->
 <div class="section">
 <h2>📈 Performance Trend (Last 10 Matches)</h2>
 <div class="chart-container"><canvas id="trendChart"></canvas></div>
 </div>
 
+<!-- Past Records -->
 <div class="section">
 <h2>🗓️ Past 10 Days Sports Records</h2>
 <table style="width:100%;background:#fff;color:#000;text-align:center;border-radius:10px;">
@@ -72,12 +77,34 @@ footer{text-align:center;margin-top:30px;font-size:14px;}
 </table>
 </div>
 
+<!-- Manual Data Entry -->
 <div class="section">
-<h2>🤖 Match Prediction (Demo AI)</h2>
+<h2>✍️ Manual Data Entry for Analysis</h2>
+<div class="grid-2">
+  <div>
+    Matches <input id="mMatches" type="number" class="input">
+    Wins <input id="mWins" type="number" class="input">
+    Losses <input id="mLosses" type="number" class="input">
+    Draws <input id="mDraws" type="number" class="input"><br><br>
+    <button class="btn" onclick="analyzeManual()">Analyze Data</button>
+  </div>
+  <div>
+    <h3>📊 Result</h3>
+    <p>Total Matches: <b id="rMatches">—</b></p>
+    <p>Win %: <b id="rWin">—</b></p>
+    <p>Team Rating: <b id="rRating">—</b></p>
+  </div>
+</div>
+</div>
+
+<!-- Prediction -->
+<div class="section">
+<h2>🤖 Match Outcome Prediction (Demo AI)</h2>
 <p>Win Probability: <b id="winProb">—</b></p>
 <button class="btn" onclick="predict()">Run Prediction</button>
 </div>
 
+<!-- Players -->
 <div class="section">
 <h2>🌟 Famous Players</h2>
 <div class="players">
@@ -87,21 +114,33 @@ footer{text-align:center;margin-top:30px;font-size:14px;}
 </div>
 </div>
 
+<!-- Developers -->
 <div class="section">
 <h2>👨‍💻 Developers</h2>
 <p style="text-align:center;">Ritesh Kumar Yadav | Rohit Gour | Ravindra Raghuwanshi</p>
 </div>
 
 <footer>© 2025 AI Sports Analytics Project</footer>
-
 </div>
 
 <script>
 function toggleTheme(){document.body.classList.toggle('light');}
+
 function predict(){
   document.getElementById('winProb').innerText =
   Math.floor(60 + Math.random()*30) + "%";
 }
+
+function analyzeManual(){
+  const m = Number(mMatches.value);
+  const w = Number(mWins.value);
+  if(m<=0){alert("Matches must be > 0");return;}
+  const wp = ((w/m)*100).toFixed(2);
+  rMatches.innerText = m;
+  rWin.innerText = wp + "%";
+  rRating.innerText = wp>70?"Excellent":wp>55?"Good":"Average";
+}
+
 new Chart(document.getElementById('trendChart'),{
   type:'line',
   data:{labels:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10'],
