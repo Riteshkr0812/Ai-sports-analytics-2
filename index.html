@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -150,17 +150,43 @@
 <h3>Analyze sports data and improve team performance</h3>
 
 <div class="section">
-  <h2>📊 Team Performance Analytics</h2>
-  <div class="chart-container">
-    <canvas id="teamChart"></canvas>
-  </div>
-</div>
-
-<div class="section">
   <h2>📈 Performance Trend (Last 10 Matches)</h2>
   <div class="chart-container">
     <canvas id="trendChart"></canvas>
   </div>
+  <p style="text-align:center; opacity:.9;">Line chart shows improvement/decline over recent matches</p>
+</div>
+
+<div class="section">
+  <h2>🗓️ Past 10 Days Sports Records</h2>
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; text-align:center; background:var(--panel); color:#000; border-radius:10px; overflow:hidden;">
+      <thead style="background:#222; color:#fff;">
+        <tr>
+          <th style="padding:10px;">Date</th>
+          <th>Opponent</th>
+          <th>Sport</th>
+          <th>Result</th>
+          <th>Score</th>
+          <th>Performance Index</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 1</td><td>Team Alpha</td><td>Cricket</td><td>Win</td><td>245/6</td><td>78</td></tr>
+        <tr><td>Day 2</td><td>Team Bravo</td><td>Football</td><td>Draw</td><td>2-2</td><td>70</td></tr>
+        <tr><td>Day 3</td><td>Team Cobra</td><td>Cricket</td><td>Loss</td><td>198/10</td><td>62</td></tr>
+        <tr><td>Day 4</td><td>Team Delta</td><td>Football</td><td>Win</td><td>3-1</td><td>75</td></tr>
+        <tr><td>Day 5</td><td>Team Eagle</td><td>Cricket</td><td>Win</td><td>276/5</td><td>82</td></tr>
+        <tr><td>Day 6</td><td>Team Falcon</td><td>Football</td><td>Loss</td><td>0-1</td><td>60</td></tr>
+        <tr><td>Day 7</td><td>Team Giant</td><td>Cricket</td><td>Win</td><td>254/7</td><td>77</td></tr>
+        <tr><td>Day 8</td><td>Team Hawk</td><td>Football</td><td>Win</td><td>2-0</td><td>74</td></tr>
+        <tr><td>Day 9</td><td>Team Inferno</td><td>Cricket</td><td>Draw</td><td>221/9</td><td>69</td></tr>
+        <tr><td>Day 10</td><td>Team Jaguar</td><td>Football</td><td>Win</td><td>4-2</td><td>80</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="text-align:center; margin-top:10px; opacity:.9;">Public / demo data used for analytics visualization</p>
+</div>
   <p style="text-align:center; opacity:.9;">Line chart shows improvement/decline over recent matches</p>
 </div>
 
