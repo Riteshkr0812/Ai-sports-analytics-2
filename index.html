@@ -31,10 +31,10 @@ body{
 header{max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr auto;gap:10px;}
 .section{background:var(--section-bg);padding:20px;border-radius:12px;max-width:1100px;margin:25px auto;}
 .chart-container{height:320px;background:var(--panel);border-radius:10px;padding:10px;}
-.btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;}
+.btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;margin:4px;}
 .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
 .card{background:var(--card-bg);padding:15px;border-radius:12px;text-align:center;}
-.card img{width:100%;height:180px;object-fit:cover;border-radius:8px;}
+.card img{width:100%;height:180px;object-fit:cover;border-radius:8px;background:#fff;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .input{width:100%;padding:8px;border-radius:6px;border:none;margin-top:4px;}
 footer{text-align:center;margin-top:30px;font-size:14px;}
@@ -77,24 +77,34 @@ footer{text-align:center;margin-top:30px;font-size:14px;}
 </table>
 </div>
 
-<!-- Manual Data Entry -->
+<!-- Manual Entry -->
 <div class="section">
 <h2>✍️ Manual Data Entry for Analysis</h2>
 <div class="grid-2">
-  <div>
-    Matches <input id="mMatches" type="number" class="input">
-    Wins <input id="mWins" type="number" class="input">
-    Losses <input id="mLosses" type="number" class="input">
-    Draws <input id="mDraws" type="number" class="input"><br><br>
-    <button class="btn" onclick="analyzeManual()">Analyze Data</button>
-  </div>
-  <div>
-    <h3>📊 Result</h3>
-    <p>Total Matches: <b id="rMatches">—</b></p>
-    <p>Win %: <b id="rWin">—</b></p>
-    <p>Team Rating: <b id="rRating">—</b></p>
-  </div>
+<div>
+Matches <input id="mMatches" type="number" class="input">
+Wins <input id="mWins" type="number" class="input">
+Losses <input id="mLosses" type="number" class="input">
+Draws <input id="mDraws" type="number" class="input"><br>
+<button class="btn" onclick="analyzeManual()">Analyze</button>
+<button class="btn" onclick="clearSaved()">🗑️ Clear</button>
 </div>
+<div>
+<h3>📊 Result</h3>
+<p>Total Matches: <b id="rMatches">—</b></p>
+<p>Win %: <b id="rWin">—</b></p>
+<p>Team Rating: <b id="rRating">—</b></p>
+</div>
+</div>
+</div>
+
+<!-- CSV Upload -->
+<div class="section">
+<h2>📁 Upload CSV for Analysis</h2>
+<input type="file" id="csvFile" accept=".csv" class="input">
+<br><br>
+<button class="btn" onclick="analyzeCSV()">Analyze CSV</button>
+<p style="opacity:.85;">CSV format: matches,wins,losses,draws</p>
 </div>
 
 <!-- Prediction -->
@@ -109,39 +119,20 @@ footer{text-align:center;margin-top:30px;font-size:14px;}
 <h2>📊 Famous Player Analysis</h2>
 <div class="players">
 <div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Virat_Kohli.jpg">
-<h3>Virat Kohli</h3>
-<p>Sport: Cricket</p>
-<p>Role: Batsman</p>
-<p>Avg: 53.5</p>
-<p><b>AI:</b> High consistency & chase expert</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Virat_Kohli.jpg" loading="lazy" referrerpolicy="no-referrer">
+<h3>Virat Kohli</h3><p>Cricket | Batsman</p><p><b>AI:</b> Consistent chase expert</p>
 </div>
-
 <div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Rohit_Sharma.jpg">
-<h3>Rohit Sharma</h3>
-<p>Sport: Cricket</p>
-<p>Role: Opener</p>
-<p>Avg: 49.2</p>
-<p><b>AI:</b> Explosive powerplay scorer</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Rohit_Sharma.jpg" loading="lazy" referrerpolicy="no-referrer">
+<h3>Rohit Sharma</h3><p>Cricket | Opener</p><p><b>AI:</b> Powerplay dominance</p>
 </div>
-
 <div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Lionel_Messi_20180626.jpg">
-<h3>Lionel Messi</h3>
-<p>Sport: Football</p>
-<p>Position: Forward</p>
-<p>Goals: 800+</p>
-<p><b>AI:</b> Elite playmaker & finisher</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Lionel_Messi_20180626.jpg" loading="lazy" referrerpolicy="no-referrer">
+<h3>Lionel Messi</h3><p>Football | Forward</p><p><b>AI:</b> Elite playmaker</p>
 </div>
-
 <div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg">
-<h3>Cristiano Ronaldo</h3>
-<p>Sport: Football</p>
-<p>Position: Forward</p>
-<p>Goals: 850+</p>
-<p><b>AI:</b> Physical dominance & clutch player</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" loading="lazy" referrerpolicy="no-referrer">
+<h3>Cristiano Ronaldo</h3><p>Football | Forward</p><p><b>AI:</b> Physical dominance</p>
 </div>
 </div>
 </div>
@@ -166,12 +157,44 @@ function predict(){
 function analyzeManual(){
   const m = Number(mMatches.value);
   const w = Number(mWins.value);
+  const l = Number(mLosses.value);
+  const d = Number(mDraws.value);
   if(m<=0){alert("Matches must be > 0");return;}
   const wp = ((w/m)*100).toFixed(2);
+  const rating = wp>70?"Excellent":wp>55?"Good":"Average";
   rMatches.innerText = m;
   rWin.innerText = wp + "%";
-  rRating.innerText = wp>70?"Excellent":wp>55?"Good":"Average";
+  rRating.innerText = rating;
+  localStorage.setItem("manualData", JSON.stringify({m,w,l,d}));
 }
+
+function analyzeCSV(){
+  const file = csvFile.files[0];
+  if(!file){alert("Upload CSV");return;}
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const v = e.target.result.trim().split("\n")[1].split(",");
+    const m=+v[0], w=+v[1], l=+v[2], d=+v[3];
+    const wp=((w/m)*100).toFixed(2);
+    rMatches.innerText=m; rWin.innerText=wp+"%";
+    rRating.innerText=wp>70?"Excellent":wp>55?"Good":"Average";
+    localStorage.setItem("csvData", JSON.stringify({m,w,l,d}));
+  };
+  reader.readAsText(file);
+}
+
+function clearSaved(){
+  localStorage.clear();
+  location.reload();
+}
+
+window.addEventListener("load",()=>{
+  const data = localStorage.getItem("manualData");
+  if(data){
+    const d = JSON.parse(data);
+    mMatches.value=d.m; mWins.value=d.w; mLosses.value=d.l; mDraws.value=d.d;
+  }
+});
 
 new Chart(document.getElementById('trendChart'),{
   type:'line',
